@@ -1,6 +1,14 @@
 import argparse
 import ConfigParser
 from pyname.run_name import run_name
+from datetime import datetime
+
+def valid_date(s):
+    try:
+        return datetime.strptime(s, "%Y-%m-%d")
+    except ValueError:
+        msg = "Not a valid date: '{0}'.".format(s)
+        raise argparse.ArgumentTypeError(msg)
 
 
 def parse_config(configfile):
@@ -41,7 +49,7 @@ def parse_config(configfile):
     args['time'] = cparser.getint('data', 'ndays')
     args['resolution'] = cparser.getfloat('data', 'resolution')
     args['domain'] = [float(x) for x in cparser.get('data', 'domain').split(', ')]
-    args['elevationOut'] = [int(x) for x in cparser.get('data','elevation_out').split('-')]
+    args['elevationOut'] = [tuple([int(x) for x in cparser.get('data', 'elevation_out').split('-')])]
 
     return args
 
@@ -53,8 +61,8 @@ def main():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('config', help='configuration file')
-    parser.add_argument('startdate', help='start date to run from')
-    parser.add_argument('enddate', help='end date to run to (inclusive)')
+    parser.add_argument('startdate', type=valid_date, help='start date to run from - Format YYYY-MM-DD')
+    parser.add_argument('enddate', type=valid_date, help='end date to run to (inclusive) - Format YYYY-MM-DD')
     args = parser.parse_args()
 
     configs = parse_config(args.config)
@@ -63,7 +71,9 @@ def main():
     configs['timeFmt'] = 'days'
     configs['timestamp'] = '3-hourly'
 
-    run_name(configs)
+    print(configs)
+
+    runid = run_name(configs)
 
 
 if __name__ == "__main__":

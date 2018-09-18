@@ -1,5 +1,4 @@
 import os
-from .utils import getjasminconfigs
 from .utils import estimatereq
 
 def write_file(params, maxruns):
@@ -10,12 +9,10 @@ def write_file(params, maxruns):
     :return: a string of file contents
     """
 
-    jasminconfigs = getjasminconfigs()
-
-    userdir = jasminconfigs.get('jasmin', 'userdir')
-    workdir = os.path.join(userdir, 'WPStest', params['runid'])
-    namedir = jasminconfigs.get('jasmin', 'namedir')
-    topodir = jasminconfigs.get('jasmin', 'topodir')
+    userdir = params['outputdir']
+    workdir = os.path.join(userdir, params['runid'])
+    namedir = params['namedir']
+    topodir = params['topodir']
 
     lines = []
 

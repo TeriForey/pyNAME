@@ -5,7 +5,7 @@ import re
 import logging
 import datetime as dt
 
-from .utils import get_Mk_global, get_Met_vals, getjasminconfigs
+from .utils import get_Mk_global, get_Met_vals
 
 LOGGER = logging.getLogger("PYWPS")
 
@@ -190,14 +190,12 @@ def generate_inputfile(params, rundate, i):
 
     # This will need editing, will need loggedin username, and a run id sub dir.
 
-    jasminconfigs = getjasminconfigs()
+    userdir = params['outputdir']
+    workdir = os.path.join(userdir, params['runid'])
 
-    userdir = jasminconfigs.get('jasmin', 'userdir')
-    workdir = os.path.join(userdir, 'WPStest', params['runid'])
-
-    utilsdir = jasminconfigs.get('jasmin', 'utilsdir')
-    namedir = jasminconfigs.get('jasmin', 'namedir')
-    topodir = jasminconfigs.get('jasmin', 'topodir')
+    utilsdir = params['utilsdir']
+    namedir = params['namedir']
+    topodir = params['topodir']
     metdir = os.path.join(workdir, "met_data", "input{}".format(i))
 
     cur_date = dt.datetime.combine(rundate, dt.time(0))

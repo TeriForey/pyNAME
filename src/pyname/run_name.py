@@ -1,11 +1,8 @@
 import os
-import shutil
-import subprocess
-import time
 from datetime import timedelta, datetime
-from pynameplot import Name, drawMap
+import shutil
 
-from .utils import daterange, getjasminconfigs
+from .utils import daterange
 from .write_inputfile import generate_inputfile
 from .write_scriptfile import write_file
 
@@ -28,17 +25,17 @@ def run_name(params):
     if params['runBackwards']:
         runtype = "BCK"
 
-    jasconfigs = getjasminconfigs()
+    params['runid'] = "{}_{}".format(datetime.strftime(params['startdate'], "%Y-%m-%d"),
+                                     datetime.strftime(params['enddate'], "%Y-%m-%d"))
 
-    runtime = datetime.strftime(datetime.now(), "%s")
-    params['runid'] = "{}{}_{}_{}_{}".format(runtype, params['time'], params['timestamp'], params['title'], runtime)
+    params['outputdir'] = os.path.join(params['outputdir'], params['runid'])
 
-    params['outputdir'] = os.path.join(jasconfigs.get('jasmin', 'outputdir'), params['runid'])
+    if os.path.exists(params['outputdir']):
+        shutil.rmtree(params['outputdir'])
 
-    if not os.path.exists(params['outputdir']):
-        os.makedirs(params['outputdir'])
-        os.makedirs(os.path.join(params['outputdir'], 'inputs'))
-        os.makedirs(os.path.join(params['outputdir'], 'outputs'))
+    os.makedirs(params['outputdir'])
+    os.makedirs(os.path.join(params['outputdir'], 'inputs'))
+    os.makedirs(os.path.join(params['outputdir'], 'outputs'))
 
     # Will write a file that lists all the input parameters
     with open(os.path.join(params['outputdir'], 'user_input_parameters.txt'), 'w') as ins:
@@ -76,15 +73,4 @@ def run_name(params):
     #     else:
     #         jobrunning = False
 
-    # TODO: Need to replace this with an actual result file
-    fakefile = os.path.join(jasconfigs.get('jasmin', 'outputdir'), '20171101_output.txt')
-
-    n = Name(fakefile)
-    mapfile = "ExamplePlot.png"
-    drawMap(n, n.timestamps[0], outfile=mapfile)
-
-    # Zip all the output files into one directory to be served back to the user.
-    zippedfile = params['runid']
-    shutil.make_archive(zippedfile, 'zip', params['outputdir'])
-
-    return params['runid'], zippedfile, mapfile
+    return params['runid']
