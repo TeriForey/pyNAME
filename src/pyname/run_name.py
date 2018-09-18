@@ -1,6 +1,8 @@
 import os
 from datetime import timedelta, datetime
 import shutil
+import subprocess
+import time
 
 from .utils import daterange
 from .write_inputfile import generate_inputfile
@@ -54,23 +56,23 @@ def run_name(params):
         fout.write(write_file(params, i+1))
 
     # TODO: We'll insert the commands to run NAME here.
-    # cat = subprocess.Popen(['cat', os.path.join(params['outputdir'], 'script.bsub')], stdout=subprocess.PIPE)
-    # runbsub = subprocess.Popen('bsub', stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=cat.stdout)
-    # sout, serr = runbsub.communicate()
-    # jobid = sout.split(' ')[1].replace('>', '').replace('<', '')
-    # jobrunning = True
-    # while jobrunning:
-    #     time.sleep(30)
-    #     checkjob = subprocess.check_output('bjobs')
-    #     if jobid in checkjob:
-    #         print("Job %s is still running" % jobid)
-    #           processesrunning = 0
-    #           for l in checkjob.split('\n'):
-    #               if jobid in l:
-    #                   processesrunning += 1
-    #           percentcomplete = (((i+1)-processesrunning)/float(i+1))*85
-    #           response.update_status("Running NAME", 10+percentcomplete)
-    #     else:
-    #         jobrunning = False
+    cat = subprocess.Popen(['cat', os.path.join(params['outputdir'], 'script.bsub')], stdout=subprocess.PIPE)
+    runbsub = subprocess.Popen('bsub', stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=cat.stdout)
+    sout, serr = runbsub.communicate()
+    jobid = sout.split(' ')[1].replace('>', '').replace('<', '')
+    jobrunning = True
+    while jobrunning:
+        time.sleep(30)
+        checkjob = subprocess.check_output('bjobs')
+        if jobid in checkjob:
+            print("Job %s is still running" % jobid)
+            processesrunning = 0
+            for l in checkjob.split('\n'):
+                if jobid in l:
+                    processesrunning += 1
+            percentcomplete = (((i+1)-processesrunning)/float(i+1))*100
+            print("Running NAME", percentcomplete)
+        else:
+            jobrunning = False
 
     return params['runid']

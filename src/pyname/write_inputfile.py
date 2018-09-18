@@ -190,8 +190,7 @@ def generate_inputfile(params, rundate, i):
 
     # This will need editing, will need loggedin username, and a run id sub dir.
 
-    userdir = params['outputdir']
-    workdir = os.path.join(userdir, params['runid'])
+    workdir = params['outputdir']
 
     utilsdir = params['utilsdir']
     namedir = params['namedir']
@@ -214,7 +213,7 @@ def generate_inputfile(params, rundate, i):
 
     MetDefnFile = os.path.join(namedir, "Resources", "Defns", MetVals['MetDefnFileName'])
     MetDeclnFile = os.path.join(utilsdir, "MetDeclarations", MetVals['MetDeclFileName'])
-    MetRestoreScript = os.path.join(userdir, "MetRestore_JASMIN.ksh")
+    MetRestoreScript = os.path.join(utilsdir, "MetRestore_JASMIN.ksh")
 
     params['npart'] = ParticlesPerSource
     params['ntimesperhour'] = nIntTimesPerHour

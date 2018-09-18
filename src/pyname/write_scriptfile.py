@@ -9,8 +9,7 @@ def write_file(params, maxruns):
     :return: a string of file contents
     """
 
-    userdir = params['outputdir']
-    workdir = os.path.join(userdir, params['runid'])
+    workdir = params['outputdir']
     namedir = params['namedir']
     topodir = params['topodir']
 
