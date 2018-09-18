@@ -56,6 +56,7 @@ def run_name(params):
         fout.write(write_file(params, i+1))
 
     # TODO: We'll insert the commands to run NAME here.
+    print("Running NAME...")
     cat = subprocess.Popen(['cat', os.path.join(params['outputdir'], 'script.bsub')], stdout=subprocess.PIPE)
     runbsub = subprocess.Popen('bsub', stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=cat.stdout)
     sout, serr = runbsub.communicate()
@@ -71,8 +72,9 @@ def run_name(params):
                 if jobid in l:
                     processesrunning += 1
             percentcomplete = (((i+1)-processesrunning)/float(i+1))*100
-            print("Running NAME", percentcomplete)
+            print "{}%".format(percentcomplete),
         else:
             jobrunning = False
+    print("Done")
 
     return params['runid']

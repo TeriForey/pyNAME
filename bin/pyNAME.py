@@ -1,6 +1,7 @@
 import argparse
 import ConfigParser
 from pyname.run_name import run_name
+from pyname.create_plots import plot_all
 from datetime import datetime
 
 def valid_date(s):
@@ -74,6 +75,8 @@ def main():
     print(configs)
 
     runid = run_name(configs)
+
+    plot_all(configs, runid)
 
 
 if __name__ == "__main__":
