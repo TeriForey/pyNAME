@@ -18,8 +18,6 @@ def plot_all(inputs, runid):
     plotoptions = {'station': (inputs['longitude'], inputs['latitude'])}
 
     plotoptions['outdir'] = os.path.join(rundir, "plots")
-    print plotoptions
-    print rundir
 
     files = glob.glob(os.path.join(rundir, 'outputs', '*_group*.txt'))
     if len(files) == 0:
@@ -27,22 +25,6 @@ def plot_all(inputs, runid):
 
     print("Plot options: %s" % plotoptions)
 
-    # We need to find all the groups and loop through them one at a time!
-    groups = {}
-    for filename in os.listdir(os.path.join(rundir, 'outputs')):
-        groupnum = filename[14]
-        try:
-            groupnum = int(groupnum)
-        except TypeError:
-            raise Exception("Cannot identify groupnumber %s" % groupnum)
-
-        if groupnum in groups:
-            shutil.copy(os.path.join(rundir, 'outputs', filename), groups[groupnum])
-        else:
-            groups[groupnum] = tempfile.mkdtemp()
-            shutil.copy(os.path.join(rundir, 'outputs', filename), groups[groupnum])
-
-    #for groupnum, tmpdir in sorted(groups.items()):
     for filename in os.listdir(os.path.join(rundir, 'outputs')):
         if '_group' in filename and filename.endswith('.txt'):
             n = Name(os.path.join(rundir, 'outputs', filename))

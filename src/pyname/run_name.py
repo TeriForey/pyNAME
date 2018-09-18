@@ -23,10 +23,6 @@ def run_name(params):
     params['title'] = params['title'].replace('(', '')
     params['title'] = params['title'].replace(')', '')
 
-    runtype = "FWD"
-    if params['runBackwards']:
-        runtype = "BCK"
-
     params['runid'] = "{}_{}".format(datetime.strftime(params['startdate'], "%Y-%m-%d"),
                                      datetime.strftime(params['enddate'], "%Y-%m-%d"))
 
@@ -66,15 +62,14 @@ def run_name(params):
         time.sleep(30)
         checkjob = subprocess.check_output('bjobs')
         if jobid in checkjob:
-            print("Job %s is still running" % jobid)
             processesrunning = 0
             for l in checkjob.split('\n'):
                 if jobid in l:
                     processesrunning += 1
             percentcomplete = (((i+1)-processesrunning)/float(i+1))*100
-            print "{}%".format(percentcomplete),
+            print "{0:.1f}%\r".format(percentcomplete),
         else:
             jobrunning = False
-    print("Done")
+    print("\nDone")
 
     return params['runid']

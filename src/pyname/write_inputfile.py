@@ -62,7 +62,6 @@ Name,                             Quantity,      Species,                  Sourc
             index,index, nzgrids, index, params['runDuration'], params['runDuration']*params['ntimesperhour'],
             dt.datetime.strftime(cur_date, "%Y%m%d"), nzgrids))
 
-
     return "\n".join(strings)+"\n"
 
 

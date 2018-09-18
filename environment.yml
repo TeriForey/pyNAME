@@ -3,3 +3,4 @@ channels:
 - teriforey
 dependencies:
 - pynameplot
+- matplotlib<2.2.0

@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 import argparse
 import ConfigParser
 from pyname.run_name import run_name
@@ -77,6 +79,9 @@ def main():
     runid = run_name(configs)
 
     plot_all(configs, runid)
+
+    print("All done!")
+    return
 
 
 if __name__ == "__main__":
