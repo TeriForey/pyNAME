@@ -1,4 +1,3 @@
-import os
 from .utils import estimatereq
 
 def write_file(params, maxruns):

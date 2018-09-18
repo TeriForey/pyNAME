@@ -1,11 +1,9 @@
 import os
 from pynameplot import Name, drawMap
 import glob
-import shutil
-import tempfile
 
 
-def plot_all(inputs, runid):
+def plot_all(inputs):
     """
     Plot all of the datapoints for all of the output files using pyNAMEplot
     :param inputs: running args

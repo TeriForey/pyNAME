@@ -74,11 +74,14 @@ def main():
     configs['timeFmt'] = 'days'
     configs['timestamp'] = '3-hourly'
 
-    print(configs)
+    print "Settings"
+    for k, v in configs.items():
+        print("%s: %s" % (k, v))
+    print
 
-    runid = run_name(configs)
+    run_name(configs)
 
-    plot_all(configs, runid)
+    plot_all(configs)
 
     print("All done!")
     return

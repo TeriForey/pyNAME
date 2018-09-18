@@ -13,7 +13,6 @@ def run_name(params):
     """
     This is the function to actually run NAME
     :param params: input parameters
-    :param response: the WPS response object
     :return: names of the output dir and zipped file
     """
 
@@ -51,7 +50,6 @@ def run_name(params):
     with open(os.path.join(params['outputdir'], 'script.bsub'), 'w') as fout:
         fout.write(write_file(params, i+1))
 
-    # TODO: We'll insert the commands to run NAME here.
     print("Running NAME...")
     cat = subprocess.Popen(['cat', os.path.join(params['outputdir'], 'script.bsub')], stdout=subprocess.PIPE)
     runbsub = subprocess.Popen('bsub', stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=cat.stdout)
@@ -67,7 +65,7 @@ def run_name(params):
                 if jobid in l:
                     processesrunning += 1
             percentcomplete = (((i+1)-processesrunning)/float(i+1))*100
-            print "{0:.1f}%\r".format(percentcomplete),
+            print "{0:.1f}%".format(percentcomplete)
         else:
             jobrunning = False
     print("\nDone")
